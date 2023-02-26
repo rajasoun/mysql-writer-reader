@@ -1,11 +1,12 @@
 #!/usr/bin/env bash 
 
+COMPOSE_FILE="${GIT_BASE_PATH}/docker-compose.yaml"
 
 # Start Standalone MySQL database write via Docker
 function start_mysql_writer() {
-    local compose_file="${GIT_BASE_PATH}/iaac/mysql/docker-compose.yaml"
-    docker-compose -f $compose_file build
-    docker-compose -f $compose_file up mysql_writer adminer -d
+    
+    docker-compose -f $COMPOSE_FILE build
+    docker-compose -f $COMPOSE_FILE up mysql_writer adminer -d
     wait_for_mysql "mysql_writer"
     warn "\nMySQL is up and running\n"
     info "Visit http://localhost:8080 to access Adminer\n"
@@ -13,9 +14,8 @@ function start_mysql_writer() {
 
 # Start Writer Reader MySQL database with replication via Docker
 function start_mysql_writer_reader() {
-    local compose_file="${GIT_BASE_PATH}/iaac/mysql/docker-compose.yaml"
-    docker-compose -f $compose_file build
-    docker-compose -f $compose_file up -d
+    docker-compose -f $COMPOSE_FILE build
+    docker-compose -f $COMPOSE_FILE up -d
     wait_for_mysql "mysql_writer"
     wait_for_mysql "mysql_reader"
     warn "\nMySQL is up and running\n"
@@ -27,7 +27,6 @@ function start_mysql_writer_reader() {
 
 # Start MySQL database via Docker
 function start_mysql() {
-    local compose_file="${GIT_BASE_PATH}/iaac/mysql/docker-compose.yaml"
     local replication_flag="$1"
     local replication_choice=$( tr '[:upper:]' '[:lower:]' <<<"$replication_flag" )
     case $replication_choice in
@@ -38,20 +37,17 @@ function start_mysql() {
 
 # Stop MySQL database via Docker
 function stop_mysql() {
-    local compose_file="${GIT_BASE_PATH}/iaac/mysql/docker-compose.yaml"
-    docker-compose -f $compose_file down -v
-    # check if compose_file contains "writer-reader" and clean data in one line 
-    [[ $compose_file == *"writer-reader"* ]] && clean_writer_reader_data
+    docker-compose -f $COMPOSE_FILE down -v
+    clean_writer_reader_data
 }
 
 # List running containers
 function ps() {
-    local compose_file="${GIT_BASE_PATH}/iaac/mysql/docker-compose.yaml"
-    docker-compose -f $compose_file ps
+    docker-compose -f $COMPOSE_FILE ps
 }
 
 # Remove data from MySQL database
 function clean_writer_reader_data() {
-    rm -rf "${PWD}/iaac/mysql/writer/data"
-    rm -rf "${PWD}/iaac/mysql/reader/data"
+    rm -rf "${PWD}/writer/data"
+    rm -rf "${PWD}/reader/data"
 }
