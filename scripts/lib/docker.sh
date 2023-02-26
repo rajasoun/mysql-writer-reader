@@ -72,3 +72,11 @@ function is_mysql_running_in_replication_mode() {
         return 1
     fi
 }
+
+# Exit if mysql_writer is not running using docker-compose ps 
+function exit_if_mysql_writer_not_running() {
+    if ! docker-compose -f $COMPOSE_FILE ps | grep -q mysql_writer; then
+        error "MySQL Writer is not running. Please start MySQL Writer first."
+        exit 1
+    fi
+}
