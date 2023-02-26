@@ -1,0 +1,1 @@
+INSERT INTO replication_test_logs (username, email) VALUES ('Raja. S', 'rajasoun@edaas.com');

@@ -3,5 +3,3 @@ CREATE TABLE IF NOT EXISTS replication_test_logs (
     username VARCHAR(255),
     email VARCHAR(255)
 );
-
-INSERT INTO replication_test_logs (username, email) VALUES ('Raja. S', 'rajasoun@edaas.com');

@@ -76,13 +76,5 @@ function show_reader_replication_status() {
     fi
 }
 
-# Test MySQL Replication
-function test_replication() {
-    local write_sql_script="$PWD/iaac/mysql/sql/test/write.sql"
-    local read_sql_script="$PWD/iaac/mysql/sql/test/read.sql"
-    local database="gorm_spike"
-    docker exec -i "mysql_writer" mysql --defaults-extra-file=/etc/mysql.client.cnf "$database" < "$write_sql_script"
-    show_reader_replication_status
-    docker exec -i "mysql_reader" mysql --defaults-extra-file=/etc/mysql.client.cnf "$database" < "$read_sql_script"
-}
+
 
