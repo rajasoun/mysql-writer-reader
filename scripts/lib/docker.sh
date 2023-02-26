@@ -6,7 +6,7 @@ COMPOSE_FILE="${GIT_BASE_PATH}/docker-compose.yaml"
 function start_mysql_writer() {
     info "Starting MySQL Writer in standalone mode"
     docker-compose -f $COMPOSE_FILE build
-    docker-compose -f $COMPOSE_FILE up mysql_writer adminer -d
+    docker-compose up -d --no-deps mysql_writer adminer
     wait_for_mysql "mysql_writer"
     warn "\nMySQL is up and running\n"
     info "Visit http://localhost:8080 to access Adminer\n"
