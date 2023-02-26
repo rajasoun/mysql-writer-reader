@@ -1,6 +1,3 @@
-
-
-
 ## About MySQL Replication
 
 MySQL replication is a setup where a database server, called the writer or source, is copied to one or more other servers, known as readers or replicas, using binary logs. 
