@@ -30,13 +30,13 @@ function test_mysql_reader() {
 
 # Test MySQL Replication
 function test_replication() {
-    if is_standalone_mysql; then 
-        info "MySQL is running in standalone mode."
-        test_mysql_writer
-    else 
+    if is_mysql_running_in_replication_mode; then 
         info "MySQL is running in replication mode."
         test_mysql_writer
         show_reader_replication_status
         test_mysql_reader  
+    else 
+        info "MySQL is running in standalone mode."
+        test_mysql_writer
     fi
 }

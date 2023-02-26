@@ -55,7 +55,7 @@ function clean_writer_reader_data() {
 
 # Check if MySQL Running in Replication Mode
 # Check if MySQL Writer and Reader are running and replication is working fine
-function is_standalone_mysql() {
+function is_mysql_running_in_replication_mode() {
     local mysql_writer_container="mysql_writer"
     local mysql_reader_container="mysql_reader"
     local mysql_writer_status=$(docker inspect -f '{{.State.Running}}' "$mysql_writer_container")

@@ -11,7 +11,7 @@ function stat() {
     info "\tWriter Max Used Connections: $max_writer_used_connections"
     info "\tReader Max Used Connections: $max_reader_used_connections"
 
-    if ! is_standalone_mysql; then 
+    if is_mysql_running_in_replication_mode; then 
         # grep for Seconds_Behind_Master to get the replication lag
         local replication_status=$(docker exec mysql_reader sh -c "export MYSQL_PWD=root_password; mysql -u root -e 'SHOW SLAVE STATUS \G'")
         local replication_lag=$(echo "$replication_status" | awk '/Seconds_Behind_Master:/ {print $2}')
