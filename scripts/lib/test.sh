@@ -28,23 +28,9 @@ function test_mysql_reader() {
     exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_row.sql"
 }
 
-# Check if MySQL Running in Replication Mode
-# Check if MySQL Writer and Reader are running and replication is working fine
-function is_standalone_mysql() {
-    local mysql_writer_container="mysql_writer"
-    local mysql_reader_container="mysql_reader"
-    local mysql_writer_status=$(docker inspect -f '{{.State.Running}}' "$mysql_writer_container")
-    local mysql_reader_status=$(docker inspect -f '{{.State.Running}}' "$mysql_reader_container")
-    if [[ "$mysql_writer_status" == "true" && "$mysql_reader_status" == "true" ]]; then
-        return 1
-    else
-        return 0
-    fi
-}
-
 # Test MySQL Replication
 function test_replication() {
-    if ! is_standalone_mysql; then 
+    if is_standalone_mysql; then 
         info "MySQL is running in standalone mode."
         test_mysql_writer
     else 
