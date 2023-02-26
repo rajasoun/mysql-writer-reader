@@ -1,0 +1,7 @@
+[client]
+host=mysql_writer
+user=writer_admin_user
+password=writer_admin_password
+
+
+

@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  mysql_writer:
+    container_name: "mysql_writer"
+    image: mysql
+    env_file:
+      - ${PWD}/iaac/mysql/writer/mysql.env
+    restart: "no"
+    ports:
+      - 4406:3306
+    volumes:
+      - ${PWD}/iaac/mysql/writer/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ${PWD}/iaac/mysql/writer/conf/mysql.client.cnf:/etc/mysql.client.cnf
+      - ${PWD}/iaac/mysql/writer/data:/var/lib/mysql
+    networks:
+      - overlay
+
+  mysql_reader:
+    container_name: "mysql_reader"
+    image: mysql
+    env_file:
+      - ${PWD}/iaac/mysql/reader/mysql.env
+    restart: "no"
+    ports:
+      - 5506:3306
+    depends_on:
+      - mysql_writer
+    volumes:
+      - ${PWD}/iaac/mysql/reader/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ${PWD}/iaac/mysql/reader/conf/mysql.client.cnf:/etc/mysql.client.cnf
+      - ${PWD}/iaac/mysql/reader/data:/var/lib/mysql
+    networks:
+      - overlay
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql_writer
+      - mysql_reader
+    networks:
+      - overlay
+
+networks:
+  overlay:
+
