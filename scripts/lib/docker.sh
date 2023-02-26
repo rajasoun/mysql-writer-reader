@@ -47,6 +47,12 @@ function ps() {
     docker-compose -f $COMPOSE_FILE ps
 }
 
+
+# Show Logs
+function logs() {
+    docker-compose -f $COMPOSE_FILE logs -f
+}
+
 # Remove data from MySQL database
 function clean_writer_reader_data() {
     rm -rf "${PWD}/writer/data"

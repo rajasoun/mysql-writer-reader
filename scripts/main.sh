@@ -18,6 +18,7 @@ function main(){
         down)stop_mysql;;
         stat)stat;;
         test)test_replication;;
+        logs)logs;;
         *) usage;;
     esac
 }
