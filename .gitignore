@@ -228,6 +228,6 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,vim,intellij+all,go
 
 !go.work
-iaac/writer/data
-iaac/reader/data
+writer/data
+reader/data
 
