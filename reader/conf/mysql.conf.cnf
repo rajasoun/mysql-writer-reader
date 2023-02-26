@@ -10,11 +10,14 @@ default_authentication_plugin = mysql_native_password
 server-id = 2
 
 // Enable binary logging
-log_bin = 1
+log_bin = mysql-reader-bin // Enable binary logging and specify the prefix for binary log files
 
 // Specify which database(s) to include in binary logging
 binlog_do_db = gorm_spike
 
 // Make the server read-only to prevent accidental updates or data loss
 read_only = 1
+
+
+
 
