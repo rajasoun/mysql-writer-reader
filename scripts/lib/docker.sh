@@ -20,9 +20,9 @@ function start_mysql_writer_reader() {
     wait_for_mysql "mysql_writer"
     wait_for_mysql "mysql_reader"
     warn "\nMySQL is up and running\n"
-    prepare_mysql_writer_for_replication
-    prepare_mysql_reader_for_replication
-    show_reader_replication_status
+    # prepare_mysql_writer_for_replication
+    # prepare_mysql_reader_for_replication
+    # show_reader_replication_status
     info "Visit http://localhost:8080 to access Adminer\n"
 }
 
