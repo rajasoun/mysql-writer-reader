@@ -4,7 +4,7 @@ COMPOSE_FILE="${GIT_BASE_PATH}/docker-compose.yaml"
 
 # Start Standalone MySQL database write via Docker
 function start_mysql_writer() {
-    
+    info "Starting MySQL Writer in standalone mode"
     docker-compose -f $COMPOSE_FILE build
     docker-compose -f $COMPOSE_FILE up mysql_writer adminer -d
     wait_for_mysql "mysql_writer"
@@ -14,6 +14,7 @@ function start_mysql_writer() {
 
 # Start Writer Reader MySQL database with replication via Docker
 function start_mysql_writer_reader() {
+    info "Starting MySQL Writer and Reader in replication mode"
     docker-compose -f $COMPOSE_FILE build
     docker-compose -f $COMPOSE_FILE up -d
     wait_for_mysql "mysql_writer"
