@@ -21,7 +21,7 @@ function wait_for_mysql() {
 function prepare_mysql_writer_for_replication() {
     # Create reader db replication user in MySQL writer
     #priv_stmt='CREATE USER "mydb_slave_user"@"%" IDENTIFIED BY "mydb_slave_pwd"; GRANT REPLICATION SLAVE ON *.* TO "mydb_slave_user"@"%"; FLUSH PRIVILEGES;'
-    priv_stmt='CREATE USER "reader_admin_user"@"%" IDENTIFIED BY "reader_admin_password"; GRANT REPLICATION SLAVE ON *.* TO "reader_admin_user"@"%"; FLUSH PRIVILEGES;'
+    priv_stmt='CREATE USER "replication_user"@"%" IDENTIFIED BY "replication_user_password"; GRANT REPLICATION SLAVE ON *.* TO "replication_user"@"%"; FLUSH PRIVILEGES;'
     docker exec mysql_writer sh -c "export MYSQL_PWD=root_password; mysql -u root -e '$priv_stmt'"
     info "MySQL writer is ready for replication"
 }
@@ -34,7 +34,7 @@ function prepare_mysql_reader_for_replication() {
     CURRENT_POS=$(echo "$MYSQL_WRITER_STATUS" | awk '/Position:/ {print $2}')
 
     # Start replication in MySQL reader
-    start_reader_stmt="CHANGE MASTER TO MASTER_HOST='mysql_writer', MASTER_USER='reader_admin_user', MASTER_PASSWORD='reader_admin_password', MASTER_LOG_FILE='$CURRENT_LOG', MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
+    start_reader_stmt="CHANGE MASTER TO MASTER_HOST='mysql_writer', MASTER_USER='replication_user', MASTER_PASSWORD='replication_user_password', MASTER_LOG_FILE='$CURRENT_LOG', MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
     start_reader_cmd="export MYSQL_PWD=root_password; mysql -u root -e \"$start_reader_stmt\""
     docker exec mysql_reader sh -c "$start_reader_cmd"
     info "MySQL reader is ready for replication"
