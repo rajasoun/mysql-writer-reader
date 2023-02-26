@@ -64,9 +64,9 @@ function clean_writer_reader_data() {
 function is_mysql_running_in_replication_mode() {
     local mysql_writer_container="mysql_writer"
     local mysql_reader_container="mysql_reader"
-    local mysql_writer_status=$(docker inspect -f '{{.State.Running}}' "$mysql_writer_container")
-    local mysql_reader_status=$(docker inspect -f '{{.State.Running}}' "$mysql_reader_container")
-    if [[ "$mysql_writer_status" == "true" && "$mysql_reader_status" == "true" ]]; then
+    local mysql_writer_status=$(docker ps --filter "name=$mysql_writer_container" --filter "status=running" --format '{{.Status}}')
+    local mysql_reader_status=$(docker ps --filter "name=$mysql_reader_container" --filter "status=running" --format '{{.Status}}')
+    if [[ "$mysql_writer_status" == *"Up"* && "$mysql_reader_status" == *"Up"* ]]; then
         return 0
     else
         return 1
