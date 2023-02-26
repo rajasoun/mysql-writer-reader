@@ -1,21 +1,8 @@
 [mysqld]
-# Disable DNS host name lookups
 skip-name-resolve
-
-# Unique server ID. It must be different from every other ID in use by any other source or replica.
 server-id = 1
-
-# Enables bin log and sets the base name and path for the binary log files
 log_bin = 1
-
-# ROW - replica replay only actual changes on the row
-# STATEMENT - replica replay all the queries that changes the data
-# MIXED - statement-based replication is used unless server decides only row-based replication can give proper result
 binlog_format = ROW
-
-# Specify a database, which statements will be written to binary log file.
 binlog_do_db = gorm_spike
-
-# Native password authentication
 default_authentication_plugin = mysql_native_password
 
