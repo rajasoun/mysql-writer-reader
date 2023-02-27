@@ -1,17 +1,15 @@
 [mysqld] 
 skip-name-resolve
 explicit_defaults_for_timestamp
-bind_address=0.0.0.0
 max_allowed_packet=16M
 default_authentication_plugin=mysql_native_password
 character_set_server=utf8
 collation_server=utf8_general_ci
-server-id=2
-log_bin=mysql-reader-bin
 binlog_do_db=gorm_spike
 read_only=1
 binlog_format=ROW
 log-bin
+server-id=2
 
 
 
