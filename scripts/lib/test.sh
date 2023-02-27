@@ -30,7 +30,7 @@ function test_mysql_reader() {
 
 # Test MySQL Replication
 function test_replication() {
-    exit_if_mysql_writer_not_running
+    exit_if_container_not_running "mysql_writer"
     if is_mysql_running_in_replication_mode; then 
         info "MySQL is running in replication mode."
         test_mysql_writer
