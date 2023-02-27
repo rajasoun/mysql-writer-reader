@@ -82,7 +82,8 @@ function prepare_mysql_reader_for_replication() {
 
 # Show MySQL Replication Status
 function show_reader_replication_status() {
-    local replication_status=$(docker exec mysql_reader sh -c "export MYSQL_PWD=root_password; mysql -u root -e 'SHOW SLAVE STATUS \G'")
+    local reader_status_sql_file="${GIT_BASE_PATH}/sql/replication/reader_status.sql"
+    local replication_status=$(execute_sql "mysql_reader" "$reader_status_sql_file")
     # Check if replication is running
     local replication_running=$(echo "$replication_status" | awk '/Slave_IO_Running:/ {print $2}')
     if [ "$replication_running" != "Yes" ]; then
