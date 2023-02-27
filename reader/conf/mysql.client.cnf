@@ -1,6 +1,6 @@
 [client]
 host=mysql_reader
-user=reader_admin_user
-password=reader_admin_password
+user=replication_user
+password=replication_password
 
 
