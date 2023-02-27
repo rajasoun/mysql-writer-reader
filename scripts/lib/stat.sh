@@ -2,7 +2,7 @@
 
 # Connect to MySQL database via Docker and execute script
 function stat() {
-    exit_if_mysql_writer_not_running
+    exit_if_container_not_running "mysql_writer"
     local stat_sql_script="${GIT_BASE_PATH}/sql/stat.sql"
     # grep for Max_used_connections to get the max connections used
     local max_writer_used_connections=$(docker exec -i "mysql_writer" mysql --defaults-extra-file=/etc/mysql.client.cnf  < "$stat_sql_script" | grep Max_used_connections | awk '{print $2}')
