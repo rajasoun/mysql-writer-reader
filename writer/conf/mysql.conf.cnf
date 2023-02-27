@@ -1,4 +1,5 @@
 [mysqld] 
+performance_schema=ON
 skip-name-resolve
 explicit_defaults_for_timestamp
 max_allowed_packet=16M
