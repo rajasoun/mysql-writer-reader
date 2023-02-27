@@ -1,7 +1,5 @@
 #!/usr/bin/env bash 
 
-#!/usr/bin/env bash 
-
 # Connect to MySQL database via Docker and execute script
 function prepare_for_read_write_ratio() {
     exit_if_mysql_writer_not_running
