@@ -30,8 +30,8 @@ function prepare_mysql_writer_for_replication() {
 function prepare_mysql_reader_for_replication() {
     # Get current log and position from MySQL writer
     MYSQL_WRITER_STATUS=$(docker exec mysql_writer sh -c 'export MYSQL_PWD=root_password; mysql -u root -e "SHOW MASTER STATUS"')
-    CURRENT_LOG=$(echo "$MYSQL_WRITER_STATUS" | awk '/File:/ {print $2}')
-    CURRENT_POS=$(echo "$MYSQL_WRITER_STATUS" | awk '/Position:/ {print $2}')
+    CURRENT_LOG=$(echo "$MYSQL_WRITER_STATUS" | awk 'NR>1 {print $1}')
+    CURRENT_POS=$(echo "$MYSQL_WRITER_STATUS" | awk 'NR>1 {print $2}')
 
     #Start replication in MySQL reader
     start_reader_stmt="CHANGE MASTER TO MASTER_HOST='mysql_writer', MASTER_USER='replication_user', MASTER_PASSWORD='replication_password', MASTER_LOG_FILE='$CURRENT_LOG', MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
