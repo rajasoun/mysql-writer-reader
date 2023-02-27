@@ -6,7 +6,7 @@ function user_exists_in_reader(){
     local mysql_container="mysql_reader"
     local sql_script_path="${GIT_BASE_PATH}/sql/replication/select_user.sql"
     if execute_sql "$mysql_container" $sql_script_path | grep -q "$1"; then
-        info "$mysql_container has $sql_user"
+        info "\t$mysql_container has $sql_user"
     else
         error "$mysql_container does not have $sql_user. Re Run the ./assist.sh up"
         exit 1
@@ -19,13 +19,13 @@ function user_exists_in_writer(){
     local mysql_container="mysql_writer"
     local sql_script_path="${GIT_BASE_PATH}/sql/replication/select_user.sql"
     if execute_sql "$mysql_container" $sql_script_path | grep -q "$1"; then
-        info "$mysql_container has $sql_user"
+        info "\t$mysql_container has $sql_user"
     else
-        info "$sql_user does not exist in $mysql_container"
+        warn "\t$sql_user does not exist in $mysql_container"
         # Create replication_user in mysql_reader
         local sql_script_path="${GIT_BASE_PATH}/sql/replication/create_user.sql"
         execute_sql "mysql_writer" $sql_script_path
-        info "$sql_user created in $mysql_container"
+        info "\t$sql_user created in $mysql_container"
     fi
 }
 
@@ -35,7 +35,7 @@ function prepare_mysql_writer_for_replication() {
     user_exists_in_reader "$sql_user" 
     user_exists_in_writer "$sql_user"
     info "MySQL writer is ready for replication"
-    
+
     # # Create reader db replication user in MySQL writer
     # priv_stmt='CREATE USER "replication_user"@"%" IDENTIFIED BY "replication_password"; GRANT REPLICATION SLAVE ON *.* TO "replication_user"@"%"; FLUSH PRIVILEGES;'
     # docker exec mysql_writer sh -c "export MYSQL_PWD=root_password; mysql -u root -e '$priv_stmt'"
