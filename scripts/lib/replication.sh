@@ -39,10 +39,12 @@ function prepare_mysql_writer_for_replication() {
     info "-------------------------------------------------------------"
     info "MySQL writer is ready for replication"
 
+    #--------- Remove
     # # Create reader db replication user in MySQL writer
     # priv_stmt='CREATE USER "replication_user"@"%" IDENTIFIED BY "replication_password"; GRANT REPLICATION SLAVE ON *.* TO "replication_user"@"%"; FLUSH PRIVILEGES;'
     # docker exec mysql_writer sh -c "export MYSQL_PWD=root_password; mysql -u root -e '$priv_stmt'"
     # info "MySQL writer is ready for replication"
+    #--------- Remove
 }
 
 # Prepare MySQL reader for replication
@@ -52,25 +54,30 @@ function prepare_mysql_reader_for_replication() {
     export CURRENT_LOG=$(echo "$MYSQL_WRITER_STATUS" | awk 'NR>1 {print $1}')
     export CURRENT_POS=$(echo "$MYSQL_WRITER_STATUS" | awk 'NR>1 {print $2}')
 
+    local reader_join_writer_sql_file="${GIT_BASE_PATH}/sql/replication/reader_join_writer.sql"
+    export MASTER_HOST="mysql_writer"
+    export MASTER_USER="replication_user"
+    export MASTER_PASSWORD="replication_password"
+    export MASTER_LOG_FILE="$CURRENT_LOG"
+    export MASTER_LOG_POS="$CURRENT_POS"
+    execute_sql "mysql_reader" "$reader_join_writer_sql_file"
+
+    local start_reader_replication_sql_file="${GIT_BASE_PATH}/sql/replication/start_reader_replication.sql"
+    execute_sql "mysql_reader" "$start_reader_replication_sql_file"
+    info "MySQL reader is ready for replication"
+
+    #--------- Remove
     # # Get current log and position from MySQL writer
     # MYSQL_WRITER_STATUS=$(docker exec mysql_writer sh -c 'export MYSQL_PWD=root_password; mysql -u root -e "SHOW MASTER STATUS"')
     # CURRENT_LOG=$(echo "$MYSQL_WRITER_STATUS" | awk 'NR>1 {print $1}')
     # CURRENT_POS=$(echo "$MYSQL_WRITER_STATUS" | awk 'NR>1 {print $2}')
 
-    # local start_replication_in_reader_sql_file="${GIT_BASE_PATH}/sql/replication/start_replication_in_reader.sql"
-    # export MASTER_HOST="mysql_writer"
-    # export MASTER_USER="replication_user"
-    # export MASTER_PASSWORD="replication_password"
-    # export MASTER_LOG_FILE="$CURRENT_LOG"
-    # export MASTER_LOG_POS="$CURRENT_POS"
-    # execute_sql "mysql_reader" "$start_replication_in_reader_sql_file"
+    # #Start replication in MySQL reader
+    # start_reader_stmt="CHANGE MASTER TO MASTER_HOST='mysql_writer', MASTER_USER='replication_user', MASTER_PASSWORD='replication_password', MASTER_LOG_FILE='$CURRENT_LOG', MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
+    # start_reader_cmd="export MYSQL_PWD=root_password; mysql -u root -e \"$start_reader_stmt\""
+    # docker exec mysql_reader sh -c "$start_reader_cmd"
     # info "MySQL reader is ready for replication"
-
-    #Start replication in MySQL reader
-    start_reader_stmt="CHANGE MASTER TO MASTER_HOST='mysql_writer', MASTER_USER='replication_user', MASTER_PASSWORD='replication_password', MASTER_LOG_FILE='$CURRENT_LOG', MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
-    start_reader_cmd="export MYSQL_PWD=root_password; mysql -u root -e \"$start_reader_stmt\""
-    docker exec mysql_reader sh -c "$start_reader_cmd"
-    info "MySQL reader is ready for replication"
+    #--------- Remove
 }
 
 # Show MySQL Replication Status
