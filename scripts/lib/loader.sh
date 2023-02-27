@@ -12,5 +12,4 @@ source "${SCRIPT_LIB_DIR}/test.sh"
 source "${SCRIPT_LIB_DIR}/string.sh"
 source "${SCRIPT_LIB_DIR}/random.sh"
 source "${SCRIPT_LIB_DIR}/sql.sh"
-
-
+source "${SCRIPT_LIB_DIR}/replication.sh"
