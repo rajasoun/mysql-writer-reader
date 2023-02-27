@@ -1,23 +1,17 @@
-# This section is specific to the MySQL daemon process
 [mysqld] 
-# Disable DNS name resolution for incoming client connections
 skip-name-resolve
-
-# Use the traditional authentication plugin for MySQL
+explicit_defaults_for_timestamp
+bind_address=0.0.0.0
+max_allowed_packet=16M
 default_authentication_plugin=mysql_native_password
-
-# Set the server ID for replication purposes
+character_set_server=utf8
+collation_server=utf8_general_ci
 server-id=2
-
-# Enable binary logging and specify the prefix for binary log files
 log_bin=mysql-reader-bin 
-
-# Specify which database(s) to include in binary logging
 binlog_do_db=gorm_spike
-
-# Make the server read-only to prevent accidental updates or data loss
 read_only=1
-
+binlog_format=ROW
+log-bin
 
 
 
