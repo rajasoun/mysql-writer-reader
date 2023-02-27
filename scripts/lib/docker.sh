@@ -80,3 +80,12 @@ function exit_if_mysql_writer_not_running() {
         exit 1
     fi
 }
+
+# Exit if mysql_writer is not running using docker-compose ps 
+function exit_if_container_not_running() {
+    local container="$1"
+    if ! docker-compose -f $COMPOSE_FILE ps | grep -q $container; then
+        error "$container is not running. Please start $container first."
+        exit 1
+    fi
+}
