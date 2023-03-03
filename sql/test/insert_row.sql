@@ -1,1 +1,1 @@
-INSERT INTO gorm_spike.replication_test_logs (username, email) VALUES ('Raja. S', 'rajasoun@edaas.com');
+INSERT INTO gorm_spike.replication_test_logs (username, email) VALUES ('Raja.S', 'rajasoun@edaas.com');

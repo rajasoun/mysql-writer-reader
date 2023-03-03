@@ -58,11 +58,17 @@ function test_reads() {
     exit_if_container_not_running "mysql_writer"
     if is_mysql_running_in_replication_mode; then 
         info "MySQL is running in replication mode."
-        exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
-        exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
+        warn "MySQL Writer"
+        output=$(exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql")
+        print_table "$output"
+        warn "MySQL Reader"
+        output=$(exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql")
+        print_table "$output"
     else 
         info "MySQL is running in standalone mode."
-        exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
+        warn "MySQL Writer"
+        output=$(exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql")
+        print_table "$output"
     fi
 }
 

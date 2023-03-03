@@ -1,1 +1,1 @@
-SELECT * FROM gorm_spike.replication_test_logs;
+SELECT email, username, timestamp FROM gorm_spike.replication_test_logs;
