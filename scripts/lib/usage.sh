@@ -11,5 +11,7 @@ function usage() {
     info "\t   ps:   List running containers"
     info "\t stat:   Print database statistics"
     info "\t test:   Test MySQL replication"
+    info "\t read:   Test MySQL reads"
+    info "\tclean:   Delete all rows from replication test logs"
     info "\t logs:   Show Container logs"
 }

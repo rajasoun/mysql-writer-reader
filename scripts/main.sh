@@ -18,6 +18,8 @@ function main(){
         down)stop_mysql;;
         stat)stat;;
         test)test_replication;;
+        read)test_reads;;
+        clean)delete_all_rows_from_replication_test_logs;;
         logs)logs;;
         *) usage;;
     esac

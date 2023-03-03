@@ -28,6 +28,14 @@ function test_mysql_reader() {
     exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
 }
 
+# Delete all rows from table
+function delete_all_rows() {
+    local container_name="$1"
+    local database="$2"
+    local table="$3"
+    docker exec -i "$container_name" mysql --defaults-extra-file=/etc/mysql.client.cnf "$database" -e "DELETE FROM $table"
+}
+
 # Test MySQL Replication
 function test_replication() {
     exit_if_container_not_running "mysql_writer"
@@ -41,3 +49,29 @@ function test_replication() {
         test_mysql_writer
     fi
 }
+
+# Test Reads in both MySQL Writer and MySQL Reader
+function test_reads() {
+    local writer_container="mysql_writer"
+    local reader_container="mysql_reader"
+    local database="gorm_spike"
+    exit_if_container_not_running "mysql_writer"
+    if is_mysql_running_in_replication_mode; then 
+        info "MySQL is running in replication mode."
+        exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
+        exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
+    else 
+        info "MySQL is running in standalone mode."
+        exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
+    fi
+}
+
+# Delete all rows from table replication_test_logs in database gorm_spike
+function delete_all_rows_from_replication_test_logs() {
+    local writer_container="mysql_writer"
+    local database="gorm_spike"
+    local table="replication_test_logs"
+    delete_all_rows "$writer_container" "$database" "$table"
+    info "Deleted all rows from table $table in database $database"
+}
+
