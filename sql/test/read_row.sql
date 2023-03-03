@@ -1,1 +1,1 @@
-SELECT * FROM replication_test_logs;
+SELECT * FROM gorm_spike.replication_test_logs;

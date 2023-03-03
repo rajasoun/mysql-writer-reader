@@ -18,14 +18,14 @@ function test_mysql_writer() {
     local database="gorm_spike"
     exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/create_table.sql" 
     exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/insert_row.sql"
-    exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_row.sql"
+    exec_sql_script "$writer_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
 }
 
 # Test <ysql Reader
 function test_mysql_reader() {
     local reader_container="mysql_reader"
     local database="gorm_spike"
-    exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_row.sql"
+    exec_sql_script "$reader_container" "$database" "$GIT_BASE_PATH/sql/test/read_rows.sql"
 }
 
 # Test MySQL Replication

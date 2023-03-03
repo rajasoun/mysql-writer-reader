@@ -1,0 +1,1 @@
+DELETE FROM gorm_spike.replication_test_logs;
